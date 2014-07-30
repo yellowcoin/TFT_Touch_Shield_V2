@@ -19,6 +19,9 @@
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 */
+
+// 7.30.2014 Added directional code Originally by Frankie Chu for V1 Seeed TFT Touch
+
 #ifndef TFTv2_h
 #define TFTv2_h
 
@@ -33,7 +36,7 @@
 #include <SPI.h>
 
 //Basic Colors
-#define RED		0xf800
+#define RED	0xf800
 #define GREEN	0x07e0
 #define BLUE	0x001f
 #define BLACK	0x0000
@@ -107,6 +110,15 @@
 #define INT16U unsigned int
 #endif
 
+//Added code begin
+//Macro definitions for char display direction (Originally by Frankie Chu for V1 Seeed TFT Touch)
+#define LEFT2RIGHT 0
+#define DOWN2UP    1
+#define RIGHT2LEFT 2
+#define UP2DOWN    3
+
+//Added code end
+
 extern INT8U simpleFont[][8];
 
 class TFT
@@ -114,7 +126,9 @@ class TFT
 
 private:
 
-
+//Added code begin
+	INT8U DisplayDirect;
+//Added code end
 
 public:
 
@@ -166,8 +180,8 @@ public:
     INT8U Read_Register(INT8U Addr, INT8U xParameter)
     {
         INT8U data=0;
-        sendCMD(0xd9);                                                      /* ext command                  */
-        WRITE_DATA(0x10+xParameter);                                        /* 0x11 is the first Parameter  */
+        sendCMD(0xd9);                    // ext command
+        WRITE_DATA(0x10+xParameter);      // 0x11 is the first Parameter
         TFT_DC_LOW;
         TFT_CS_LOW;
         SPI.transfer(Addr);
@@ -182,28 +196,33 @@ public:
 	void setCol(INT16U StartCol,INT16U EndCol);
 	void setPage(INT16U StartPage,INT16U EndPage);
 	void setXY(INT16U poX, INT16U poY);
-    void setPixel(INT16U poX, INT16U poY,INT16U color);
+	void setPixel(INT16U poX, INT16U poY,INT16U color);
 	
 	void fillScreen(INT16U XL,INT16U XR,INT16U YU,INT16U YD,INT16U color);
 	void fillScreen(void);
 	INT8U readID(void);
 	
 	void drawChar(INT8U ascii,INT16U poX, INT16U poY,INT16U size, INT16U fgcolor);
-    void drawString(char *string,INT16U poX, INT16U poY,INT16U size,INT16U fgcolor);
+	void drawString(char *string,INT16U poX, INT16U poY,INT16U size,INT16U fgcolor);
 	void fillRectangle(INT16U poX, INT16U poY, INT16U length, INT16U width, INT16U color);
 	
 	void drawLine(INT16U x0,INT16U y0,INT16U x1,INT16U y1,INT16U color);
-    void drawVerticalLine(INT16U poX, INT16U poY,INT16U length,INT16U color);
-    void drawHorizontalLine(INT16U poX, INT16U poY,INT16U length,INT16U color);
-    void drawRectangle(INT16U poX, INT16U poY, INT16U length,INT16U width,INT16U color);
+	void drawVerticalLine(INT16U poX, INT16U poY,INT16U length,INT16U color);
+	void drawHorizontalLine(INT16U poX, INT16U poY,INT16U length,INT16U color);
+	void drawRectangle(INT16U poX, INT16U poY, INT16U length,INT16U width,INT16U color);
 	
 	void drawCircle(int poX, int poY, int r,INT16U color);
-    void fillCircle(int poX, int poY, int r,INT16U color);
+	void fillCircle(int poX, int poY, int r,INT16U color);
 	
 	void drawTraingle(int poX1, int poY1, int poX2, int poY2, int poX3, int poY3, INT16U color);
-    INT8U drawNumber(long long_num,INT16U poX, INT16U poY,INT16U size,INT16U fgcolor);
-    INT8U drawFloat(float floatNumber,INT8U decimal,INT16U poX, INT16U poY,INT16U size,INT16U fgcolor);
-    INT8U drawFloat(float floatNumber,INT16U poX, INT16U poY,INT16U size,INT16U fgcolor);
+	INT8U drawNumber(long long_num,INT16U poX, INT16U poY,INT16U size,INT16U fgcolor);
+	INT8U drawFloat(float floatNumber,INT8U decimal,INT16U poX, INT16U poY,INT16U size,INT16U fgcolor);
+	INT8U drawFloat(float floatNumber,INT16U poX, INT16U poY,INT16U size,INT16U fgcolor);
+
+//Added code begin
+	void setOrientation(INT16U HV);
+	void setDisplayDirect(INT8U = LEFT2RIGHT);
+//Added code end
 
 };
 
