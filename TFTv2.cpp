@@ -596,7 +596,7 @@ INT8U TFT::drawFloat(float floatNumber,INT16U poX, INT16U poY,INT16U size,INT16U
     INT8U f=0;
     if(floatNumber<0.0)							/* floatNumber < 0 */
     {
-        drawChar('-',poX, poY, size, fgcolor)	/* add a '-' */
+        drawChar('-',poX, poY, size, fgcolor);	/* add a '-' */
         floatNumber = -floatNumber;
         if(poX < MAX_X)
         {
